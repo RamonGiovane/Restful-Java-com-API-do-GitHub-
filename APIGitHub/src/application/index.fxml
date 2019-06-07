@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="584.0" spacing="10.0" style="-fx-border-color: darkgray;" BorderPane.alignment="CENTER">
+         <children>
+            <Text lineSpacing="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome do Usuário:" wrappingWidth="119.13671875">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <TextField prefHeight="25.0" prefWidth="222.0" />
+            <Button mnemonicParsing="false" text="Pesquisar" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
