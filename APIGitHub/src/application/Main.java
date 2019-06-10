@@ -53,7 +53,7 @@ public class Main extends Application {
 		}
 	}
 
-	public static void requisicao(String usuario) {
+	public static void requisicao(String nomeUsuario) {
 		URL url;
 		System.out.println("teste");
 		try {
@@ -61,7 +61,7 @@ public class Main extends Application {
 			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.254", 8080));
 
 			//Cria um objeto URL de onde será a requisição
-			url = new URL(URL_INICIAL + usuario + URL_FINAL);
+			url = new URL(URL_INICIAL + nomeUsuario + URL_FINAL);
 
 
 			//Cria um objeto para a estabelcer uma conexão HTTP
@@ -78,13 +78,25 @@ public class Main extends Application {
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(con.getInputStream()));
 			String inputLine;
-			StringBuffer content = new StringBuffer("abc");
+			StringBuffer content = new StringBuffer();
+
+
 
 			while ((inputLine = in.readLine()) != null) {
 				content.append(inputLine).append("\n");
 			}
 			in.close();
 			System.out.println(content.toString());
+
+			//JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
+//			Usuario usuario = new Usuario();
+//			usuario.setLogin(json.get("login").toString());
+//			usuario.setLinkPerfil(json.get("url").toString());
+//			usuario.setUrlImagemPerfil(json.get("avatar").toString());
+
+		//	System.out.println(usuario);
+
+
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
