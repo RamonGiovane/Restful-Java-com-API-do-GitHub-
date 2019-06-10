@@ -10,20 +10,40 @@ import java.net.Proxy;
 import java.net.URL;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
 public class Main extends Application {
+
+	private static final String URL_INICIAL ="https://api.github.com/users/", URL_FINAL = "/followers";
+	/*Uma abstração simples do que são os componentes em JavaFx é pensar como:
+	 *  * um Stage sendo uma janela
+	 *  * uma Scene sendo o conteúdo dentro da janela
+	 *  * o programa pode ter vários Stages, mas deve começar com uma padrão.
+	 *  * o
+	 *   e várias Scenes*/
 	@Override
 	public void start(Stage primaryStage) {
-		requisicao();
+		//requisicao();
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			//Carrega o arquivo fxml dentro de um objeto Parent (classe base de todos os painéis do JavaFX)
+			Pane root = FXMLLoader.load(getClass().getResource("index.fxml"));
+
+			//Insere na cena o conteúdo carregado
+			Scene scene = new Scene(root);
+
+			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+			//Define um título para a janela
+			primaryStage.setTitle("Buscador do GitHub");
+
+			//Define qual cena ocupará a janela no momento
 			primaryStage.setScene(scene);
+
+			//Exibe a janela
 			primaryStage.show();
 
 
@@ -33,27 +53,38 @@ public class Main extends Application {
 		}
 	}
 
-	private void requisicao() {
+	public static void requisicao(String usuario) {
 		URL url;
 		System.out.println("teste");
 		try {
+			//Primeiro, cria um objeto que define o proxy e a porta
 			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.254", 8080));
-			url = new URL("https://api.github.com/users/RamonGiovane/followers");
+
+			//Cria um objeto URL de onde será a requisição
+			url = new URL(URL_INICIAL + usuario + URL_FINAL);
+
+
+			//Cria um objeto para a estabelcer uma conexão HTTP
 			HttpURLConnection con = (HttpURLConnection) url.openConnection(proxy);
+
+			//Faz uma chamada GET na URL fornecida.
 			con.setRequestMethod("GET");
 
+			//Verifica o status da requisição. 200  = sucesso!
 			int status = con.getResponseCode();
 			System.out.println(status);
 
+			//Lendo os dados da requisição
 			BufferedReader in = new BufferedReader(
-					  new InputStreamReader(con.getInputStream()));
-					String inputLine;
-					StringBuffer content = new StringBuffer();
-					while ((inputLine = in.readLine()) != null) {
-					    content.append(inputLine);
-					}
-					in.close();
-		System.out.println(content.toString());
+					new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer("abc");
+
+			while ((inputLine = in.readLine()) != null) {
+				content.append(inputLine).append("\n");
+			}
+			in.close();
+			System.out.println(content.toString());
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
