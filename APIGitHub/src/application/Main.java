@@ -9,6 +9,11 @@ import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -45,9 +50,6 @@ public class Main extends Application {
 
 			//Exibe a janela
 			primaryStage.show();
-
-
-
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -75,12 +77,9 @@ public class Main extends Application {
 			System.out.println(status);
 
 			//Lendo os dados da requisição
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer content = new StringBuffer();
-
-
 
 			while ((inputLine = in.readLine()) != null) {
 				content.append(inputLine).append("\n");
@@ -88,14 +87,21 @@ public class Main extends Application {
 			in.close();
 			System.out.println(content.toString());
 
-			//JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
-//			Usuario usuario = new Usuario();
-//			usuario.setLogin(json.get("login").toString());
-//			usuario.setLinkPerfil(json.get("url").toString());
-//			usuario.setUrlImagemPerfil(json.get("avatar").toString());
+			JsonArray jsonArray = new JsonParser().parse(content.toString()).getAsJsonArray();
+			Usuario usuario = new Usuario();
 
-		//	System.out.println(usuario);
 
+			for (JsonElement jsonElement : jsonArray) {
+				JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+				System.out.println(jsonObject);
+
+				usuario.setLogin(jsonObject.get("login").toString());
+				usuario.setLinkPerfil(jsonObject.get("url").toString());
+				usuario.setUrlImagemPerfil(jsonObject.get("avatar_url").toString());
+			}
+
+			System.out.println(usuario);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -104,10 +110,6 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
-
 	}
 
 	public static void main(String[] args) {

@@ -40,8 +40,4 @@ public class Usuario {
 		return String.format("Usuario [login=%s, urlImagemPerfil=%s, linkPerfil=%s]", login, urlImagemPerfil,
 				linkPerfil);
 	}
-
-
-
-
 }
