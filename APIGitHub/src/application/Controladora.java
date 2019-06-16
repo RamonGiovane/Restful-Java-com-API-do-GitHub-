@@ -1,6 +1,9 @@
 package application;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +17,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -25,14 +31,17 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import sun.awt.image.ImageWatched.Link;
 
 public class Controladora  implements Initializable{
 	private final String URL_INICIAL ="https://api.github.com/users/", URL_FINAL = "/followers";
 	private Requisicao requisicao;
 	
 	public Controladora() {
-		//requisicao = new Requisicao("10.0.0.254", 8080);
-		requisicao = new Requisicao();
+		//requisicao = new Requisicao("10.0.0.254", 8080); //com proxy (quando usar essa linha vai estar usando proxy.
+		requisicao = new Requisicao(); //sem proxy (para rodar em casa
 	}
 	
 	@Override
@@ -56,11 +65,12 @@ public class Controladora  implements Initializable{
 	}
 	
 	private void preencherCaixaDeUsuarios(List<Usuario> usuariosList) {
-		
 		HBox card;
+		//Hyperlink urlUsuario = new Hyperlink();
 		
 		for(Usuario usuario : usuariosList) {
-			ImageView imagemPerfil = new ImageView(new Image(usuario.getUrlImagemPerfil().replace("\"", ""), 50.0, 50.0, true, false));
+			ImageView imagemPerfil = new ImageView(new Image(usuario.getUrlImagemPerfil().replace("\"", ""), 50.0, 50.0, true, false));			
+			
 			card = new HBox();
 			//card.setPrefWidth(BorderPane);
 
@@ -70,8 +80,35 @@ public class Controladora  implements Initializable{
 			card.getChildren().addAll(imagemPerfil, nomeUsuario);
 			card.setPadding(new Insets(15, 12, 15, 12));
 		    card.setSpacing(10);
+		    
+		    
+		    
+		    
+
+	        
+		    card.setCursor(Cursor.HAND);
+		    card.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+		    	System.out.println(usuario.getLinkPerfil());
+			
+		    	if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+		    		try {
+		    			//System.out.println("teste");
+		    			//Desktop.getDesktop().browse(URI.create(usuario.getLinkPerfil()));
+		    			System.out.println("passou");
+		    			Desktop.getDesktop().browse(new URI(usuario.getLinkPerfil()));
+		    			System.out.println("teste");
+				    } catch (IOException | URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else
+					System.out.println("Não suporta");
+				
+				event.consume();
+		    });
+		    
 			vBox.getChildren().addAll(card);
-		}
+		}	
 		
 	}
 	
@@ -96,9 +133,9 @@ public class Controladora  implements Initializable{
 				JsonObject jsonObject = jsonElement.getAsJsonObject();
 
 				usuario = new Usuario();
-				
+			
 				usuario.setLogin(jsonObject.get("login").toString());
-				usuario.setLinkPerfil(jsonObject.get("url").toString());
+				usuario.setLinkPerfil(jsonObject.get("html_url").getAsString());
 				usuario.setUrlImagemPerfil(jsonObject.get("avatar_url").toString());
 				
 				usuariosList.add(usuario);

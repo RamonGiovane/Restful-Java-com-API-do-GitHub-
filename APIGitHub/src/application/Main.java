@@ -10,26 +10,24 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	
-	/*Uma abstra��o simples do que s�o os componentes em JavaFx � pensar como:
+	/* Uma abstração simples do que são os componentes em JavaFx é pensar como:
 	 *  * um Stage sendo uma janela
-	 *  * uma Scene sendo o conte�do dentro da janela
-	 *  * o programa pode ter v�rios Stages, mas deve come�ar com uma padr�o.
-	 *  * o
-	 *   e v�rias Scenes*/
+	 *  * uma Scene sendo o conteúdo dentro da janela
+	 *  * o programa pode ter vários Stages, mas deve começar com uma padrão.
+	 *  */
 	@Override
 	public void start(Stage primaryStage) {
-		//requisicao();
 		try {
-			//Carrega o arquivo fxml dentro de um objeto Parent (classe base de todos os pain�is do JavaFX)
+			//Carrega o arquivo fxml dentro de um objeto Parent (classe base de todos os painéis do JavaFX)
 			Pane root = FXMLLoader.load(getClass().getResource("index.fxml"));
 
-			//Insere na cena o conte�do carregado
+			//Insere na cena o conteúdo carregado
 			Scene scene = new Scene(root);
 
-			//Define um t�tulo para a janela
+			//Define um título para a janela
 			primaryStage.setTitle("Buscador de Seguidores do GitHub");
 
-			//Define qual cena ocupar� a janela no momento
+			//Define qual cena ocupará a janela no momento
 			primaryStage.setScene(scene);
 
 			//Exibe a janela

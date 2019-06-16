@@ -18,7 +18,7 @@
 	<top>
 		<HBox alignment="CENTER" prefHeight="59.0" prefWidth="584.0" spacing="10.0" style="-fx-border-color: darkgray" BorderPane.alignment="CENTER">
 			<children>
-				<Text lineSpacing="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome do Usuário:" wrappingWidth="119.13671875">
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome do Usuário:" wrappingWidth="130.13671875">
 					<font>
 						<Font size="14.0" />
 					</font>
@@ -31,10 +31,7 @@
 	<center>
 		<ScrollPane prefHeight="361.0" prefWidth="631.0" BorderPane.alignment="CENTER">
 			<content>
-
 				<VBox fx:id="vBox" prefWidth="615.0" />
-
-
 			</content>
 		</ScrollPane>
 	</center>
