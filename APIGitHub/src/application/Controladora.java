@@ -39,12 +39,18 @@ public class Controladora  implements Initializable{
 	private Requisicao requisicao;
 
 	public Controladora() {
-		//requisicao = new Requisicao("10.0.0.254", 8080); //com proxy (quando usar essa linha vai estar usando proxy.
-		requisicao = new Requisicao(); //sem proxy (para rodar em casa
+		requisicao = new Requisicao("10.0.0.254", 8080); //com proxy (quando usar essa linha vai estar usando proxy.
+		//requisicao = new Requisicao(); //sem proxy (para rodar em casa
 	}
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {}
+	public void initialize(URL location, ResourceBundle resources) {
+		textField.addEventFilter(KeyEvent.KEY_PRESSED, (event) -> {
+			if (event.getCode() == KeyCode.ENTER)
+				pesquisar(null);
+		});
+
+	}
 
 	@FXML
 	TextField textField;
@@ -58,17 +64,6 @@ public class Controladora  implements Initializable{
 		limparVBox();
 		preencherCaixaDeUsuarios(lerUsuarios(textField.getText()));
 	}
-
-	/*@FXML
-	public void PesquisarEnter(KeyEvent event) {
-		scene.setOnKeyPressed(e -> {
-			if (e.getCode() == KeyCode.ENTER) {
-				System.out.println(textField.getText());
-				limparVBox();
-				preencherCaixaDeUsuarios(lerUsuarios(textField.getText()));
-			}
-		});
-	}*/
 
 	private void limparVBox() {
 		vBox.getChildren().remove(0, vBox.getChildren().size());
