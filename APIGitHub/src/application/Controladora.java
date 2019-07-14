@@ -13,13 +13,16 @@ import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -31,7 +34,6 @@ public class Controladora  implements Initializable{
 		//requisicao = new Requisicao("10.0.0.254", 8080);
 		requisicao = new Requisicao();
 	}
-	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {}
@@ -55,18 +57,20 @@ public class Controladora  implements Initializable{
 	
 	private void preencherCaixaDeUsuarios(List<Usuario> usuariosList) {
 		
-		BorderPane card;
+		HBox card;
 		
 		for(Usuario usuario : usuariosList) {
-			card = new BorderPane();
+			ImageView imagemPerfil = new ImageView(new Image(usuario.getUrlImagemPerfil().replace("\"", ""), 50.0, 50.0, true, false));
+			card = new HBox();
 			//card.setPrefWidth(BorderPane);
 
 			card.setPrefHeight(50);
 			card.setBorder(new Border(new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID, new CornerRadii(1),null)));
 			Label nomeUsuario = new Label(usuario.getLogin().split("\"")[1]);
-			card.setCenter(nomeUsuario);
-			
-			vBox.getChildren().add(card);
+			card.getChildren().addAll(imagemPerfil, nomeUsuario);
+			card.setPadding(new Insets(15, 12, 15, 12));
+		    card.setSpacing(10);
+			vBox.getChildren().addAll(card);
 		}
 		
 	}
@@ -79,7 +83,7 @@ public class Controladora  implements Initializable{
 			//Cria um objeto URL de onde ser� a requisi��o
 			String url = URL_INICIAL + nomeUsuario + URL_FINAL;
 			requisicao.requisitar(url, "GET");
-			
+				
 		
 			//Verifica o status da requisi��o. 200  = sucesso!
 			System.out.println(requisicao.statusDeResposta());
@@ -99,9 +103,6 @@ public class Controladora  implements Initializable{
 				
 				usuariosList.add(usuario);
 			}
-
-
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
